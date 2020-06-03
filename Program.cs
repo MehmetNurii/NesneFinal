@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NesneFinal
 {
@@ -6,7 +7,14 @@ namespace NesneFinal
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+           Dictionary<string, double> Currencies = new Dictionary<string, double>();
+            Currencies.Add("asd",234);
+            
+            foreach (var item in Currencies)
+            {
+                Console.WriteLine(item);
+            }
+        
         }
     }
 }
