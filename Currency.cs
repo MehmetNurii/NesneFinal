@@ -11,6 +11,8 @@ namespace NesneFinal
 
         public Currency(double tryusd,double tryeuro,double usdtry,double usdeuro,double eurotry,double eurousd)
         {
+            //Hocam inşa edici kullanmamın sebebi program çalıştıktan sonra kurları güncelleyebilmek.
+
             Add("USD/TRY",3.0);
             Add("USD/EURO", 3.0);
             Add("TRY/USD", 3.0);
