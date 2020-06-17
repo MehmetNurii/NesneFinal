@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NesneFinal
 {
-    class Currency
+    class Currency 
     {
         private static Dictionary<string, double> Currencies = new Dictionary<string, double>();
        

@@ -9,11 +9,9 @@ namespace NesneFinal
         {
            Dictionary<string, double> Currencies = new Dictionary<string, double>();
             Currencies.Add("asd",234);
-            
-            foreach (var item in Currencies)
-            {
-                Console.WriteLine(item);
-            }
+
+           
+          
         
         }
     }
