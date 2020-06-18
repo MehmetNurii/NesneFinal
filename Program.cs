@@ -7,11 +7,13 @@ namespace NesneFinal
     {
         static void Main(string[] args)
         {
-            FileIO.InitFile();
+            string asd="sad";
+            Auth.CheckCredentials("301005", "Mordor99");
 
-           
-          
-        
+
+
+
+
         }
     }
 }

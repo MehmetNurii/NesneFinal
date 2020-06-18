@@ -41,5 +41,40 @@ namespace NesneFinal
         {
             Directory.CreateDirectory(mainDirectory);
         }
+
+        public static bool ReadCredentials(ref string username, string hashedPassword)
+        {
+            try
+            {
+                using (StreamReader sr = File.OpenText(authFile))
+                {
+                    string[] Credentials;
+                    while (!sr.EndOfStream)
+                    {
+                        Credentials = sr.ReadLine().Split(',');
+                        
+                        if (Credentials[0]==username&& Credentials[1] == hashedPassword)
+                        {
+                            return true;
+                        }
+                    }
+
+                }
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine($"The file was not found: '{e}'");
+                
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                Console.WriteLine($"The directory was not found: '{e}'");
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine($"The file could not be opened: '{e}'");
+            }
+            return false;
+        }
     }
 }
