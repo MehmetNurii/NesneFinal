@@ -7,8 +7,7 @@ namespace NesneFinal
     {
         static void Main(string[] args)
         {
-           Dictionary<string, double> Currencies = new Dictionary<string, double>();
-            Currencies.Add("asd",234);
+            FileIO.InitFile();
 
            
           
