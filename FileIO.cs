@@ -7,9 +7,9 @@ namespace NesneFinal
 {
     class FileIO
     {
-        private static string mainDirectory = @"c://final";
-        private static string clientFile = @"c://final/client.txt";
-        private static string authFile = @"c://final/auth.txt";
+        private static readonly string mainDirectory = @"c://final";
+        private static readonly string clientFile = @"c://final/client.txt";
+        private static readonly string authFile = @"c://final/auth.txt";
         public  static void InitFile()
         {
             if (Directory.Exists(mainDirectory))
