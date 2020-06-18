@@ -26,7 +26,7 @@ namespace NesneFinal
                 if (!File.Exists(authFile))
                 {
                     Console.WriteLine("Auth dosyası bulunamadı.");
-                    Console.WriteLine("Program bitiriliyor");
+                    Console.WriteLine("Program bitiriliyor ...");
                     Environment.Exit(0);
                 }
                 
