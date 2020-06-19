@@ -8,7 +8,7 @@ namespace NesneFinal
     {
         static public void GetClients()
         {
-
+           
         }
     }
 }
