@@ -52,12 +52,12 @@ namespace NesneFinal
             
         }
         
-        public abstract string IbanTR { get; set; }
-        public abstract double MiktarIbanTR { get; set; }
-        public abstract string IbanEuro { get; set; }
-        public abstract double MiktarIbanEuro { get; set; }
-        public abstract string IbanUsd { get; set; }
-        public abstract double MiktarIbanUsd { get; set; }
+        public  string IbanTR { get; set; }
+        public  double MiktarIbanTR { get; set; }
+        public  string IbanEuro { get; set; }
+        public  double MiktarIbanEuro { get; set; }
+        public  string IbanUsd { get; set; }
+        public  double MiktarIbanUsd { get; set; }
         public int HesapNo { get => hesapNo; set => hesapNo = value; }
     }
 }

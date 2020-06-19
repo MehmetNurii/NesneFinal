@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace NesneFinal
 {
     class Program
@@ -9,7 +10,7 @@ namespace NesneFinal
         {
             string asd="sad";
             Auth.CheckCredentials("301005", "Mordor99");
-
+            Test.GetClients();
 
 
 

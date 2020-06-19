@@ -82,7 +82,7 @@ namespace NesneFinal
       {
             try
             {
-                using (StreamWriter file = new System.IO.StreamWriter(clientFile))
+                using (StreamWriter file = File.AppendText(clientFile))
                 {
                     if (client.IbanTR!=null)
                     {
