@@ -11,7 +11,7 @@ namespace NesneFinal
             get;
             set;
         }
-        int MiktarIbanEuro {
+        double MiktarIbanEuro {
             get;
             set;
         }
@@ -23,7 +23,7 @@ namespace NesneFinal
             get;
             set;
         }
-        int MiktarIbanUsd
+        double MiktarIbanUsd
         {
             get;
             set;
@@ -34,25 +34,30 @@ namespace NesneFinal
     {
         private int hesapNo;
         private string adSoyad;
+        private string password;
 
-        private string ibanTR = null;
-        private int miktarIbanTR = 0;
-
-        protected BaseClient(int hesapNo, string adSoyad, string ibanTR, int miktarIbanTR, string ıbanEuro=null, int miktarIbanEuro=0, string ıbanUsd=null, int miktarIbanUsd=0)
+        protected BaseClient(int hesapNo, string adSoyad,string password, string ibanTR, double miktarIbanTR, string ıbanEuro=null, double miktarIbanEuro =0, string ıbanUsd=null, double miktarIbanUsd =0)
         {
-            this.hesapNo = hesapNo;
+            this.HesapNo = hesapNo;
             this.adSoyad = adSoyad;
-            this.ibanTR = ibanTR;
-            this.miktarIbanTR = miktarIbanTR;
+            this.password = password;
+            IbanTR = ibanTR;
+            MiktarIbanTR = miktarIbanTR;
             IbanEuro = ıbanEuro;
             MiktarIbanEuro = miktarIbanEuro;
             IbanUsd = ıbanUsd;
             MiktarIbanUsd = miktarIbanUsd;
-        }
 
+
+            
+        }
+        
+        public abstract string IbanTR { get; set; }
+        public abstract double MiktarIbanTR { get; set; }
         public abstract string IbanEuro { get; set; }
-        public abstract int MiktarIbanEuro { get; set; }
+        public abstract double MiktarIbanEuro { get; set; }
         public abstract string IbanUsd { get; set; }
-        public abstract int MiktarIbanUsd { get; set; }
+        public abstract double MiktarIbanUsd { get; set; }
+        public int HesapNo { get => hesapNo; set => hesapNo = value; }
     }
 }
