@@ -11,7 +11,7 @@ namespace NesneFinal
             get;
             set;
         }
-        int miktarIbanEuro {
+        int MiktarIbanEuro {
             get;
             set;
         }
@@ -23,29 +23,36 @@ namespace NesneFinal
             get;
             set;
         }
-        int miktarIbanUsd
+        int MiktarIbanUsd
         {
             get;
             set;
         }
     }
 
-    abstract class BaseClient:IEuro,IUsd
+    abstract class BaseClient : IEuro, IUsd
     {
         private int hesapNo;
         private string adSoyad;
-        
-        private string ibanTR=null;
+
+        private string ibanTR = null;
         private int miktarIbanTR = 0;
 
-        private string ibanEuro = null;
-        private int miktarEuro = 0;
+        protected BaseClient(int hesapNo, string adSoyad, string ibanTR, int miktarIbanTR, string ıbanEuro=null, int miktarIbanEuro=0, string ıbanUsd=null, int miktarIbanUsd=0)
+        {
+            this.hesapNo = hesapNo;
+            this.adSoyad = adSoyad;
+            this.ibanTR = ibanTR;
+            this.miktarIbanTR = miktarIbanTR;
+            IbanEuro = ıbanEuro;
+            MiktarIbanEuro = miktarIbanEuro;
+            IbanUsd = ıbanUsd;
+            MiktarIbanUsd = miktarIbanUsd;
+        }
 
-        private string ibanUsd = null;
-        private int miktarUsd = 0;
-        public string IbanEuro { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int miktarIbanEuro { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string IbanUsd { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int miktarIbanUsd { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public abstract string IbanEuro { get; set; }
+        public abstract int MiktarIbanEuro { get; set; }
+        public abstract string IbanUsd { get; set; }
+        public abstract int MiktarIbanUsd { get; set; }
     }
 }
