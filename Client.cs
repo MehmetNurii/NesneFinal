@@ -8,7 +8,7 @@ namespace NesneFinal
     {
         public Client(int hesapNo, string adSoyad, string ibanTR, int miktarIbanTR, string ıbanEuro = null, int miktarIbanEuro = 0, string ıbanUsd = null, int miktarIbanUsd = 0) : base(hesapNo, adSoyad, ibanTR, miktarIbanTR, ıbanEuro, miktarIbanEuro, ıbanUsd, miktarIbanUsd)
         {
-            
+            Database.Clients.Add(this);
         }
 
         public override string IbanEuro { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
