@@ -12,9 +12,9 @@ namespace NesneFinal
         public static bool CheckCredentials(string username,string password)
         {
             
-            Console.WriteLine(FileIO.ReadCredentials(ref username, getSha256Hash(password)));
+            return FileIO.ReadCredentials(ref username, getSha256Hash(password));
 
-            return true;
+            
         }
         //Kaynak https://www.c-sharpcorner.com/article/compute-sha256-hash-in-c-sharp/
 
