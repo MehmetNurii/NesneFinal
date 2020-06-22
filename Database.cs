@@ -9,7 +9,7 @@ namespace NesneFinal
         private static Database database;
 
         public static List<Client> Clients = new List<Client>();
-
+        
         private Database()
         {
 

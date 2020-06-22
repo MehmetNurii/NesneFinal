@@ -8,11 +8,12 @@ namespace NesneFinal
     {
         static void Main(string[] args)
         {
-            string asd="sad";
-            Auth.CheckCredentials("301005", "Mordor99");
-            Test.GetClients();
-
-
+            
+            while (true) {
+                
+                //Console.WriteLine(Convert.ToUInt16( Console.ReadKey().KeyChar));
+                UserInterface.Init();
+            }
 
 
         }
