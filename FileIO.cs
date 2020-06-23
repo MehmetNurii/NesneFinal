@@ -35,6 +35,7 @@ namespace NesneFinal
             else
             {
                 CreateFinalDirectory();
+                InitFile();
             }
         }
 
@@ -87,6 +88,7 @@ namespace NesneFinal
             {
                 using (StreamWriter file = File.AppendText(clientFile))
                 {
+                   
                     if (client.IbanTR!=null)
                     {
                         file.WriteLine(client.HesapNo+","+client.IbanTR+","+client.MiktarIbanTR);

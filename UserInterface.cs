@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -9,6 +10,7 @@ namespace NesneFinal
     {
         public static void Init()
         {
+            FileIO.InitFile();
             Test.GetClients();
 
             while (UserInterface.LoginScreen() != true) ;
@@ -103,7 +105,7 @@ namespace NesneFinal
 
         }
         
-        public static void WelcomeScreen()
+        private static void WelcomeScreen()
         {
           
             Client ActiveSession = Auth.ActiveAccount();
@@ -122,9 +124,13 @@ namespace NesneFinal
             {
                 GetClientInfo();
             }
+            else if (selectedCode==50)
+            {
+                TransferScreen();
+            }
         }
 
-        public static void GetClientInfo()
+        private static void GetClientInfo()
         {
             Client ActiveSession = Auth.ActiveAccount();
             Console.WriteLine();
@@ -135,7 +141,7 @@ namespace NesneFinal
             {
                 Console.WriteLine(); Console.WriteLine();
 
-                Console.WriteLine("TR HESABI");
+                Console.WriteLine("1- TR HESABI");
                 Console.Write("Iban :");
                 Console.Write(ActiveSession.IbanTR);
 
@@ -149,7 +155,7 @@ namespace NesneFinal
             {
                 Console.WriteLine(); Console.WriteLine();
 
-                Console.WriteLine("EURO HESABI");
+                Console.WriteLine("2- EURO HESABI");
                 Console.Write("Iban :");
                 Console.Write(ActiveSession.IbanEuro);
 
@@ -163,7 +169,7 @@ namespace NesneFinal
             {
                 Console.WriteLine(); Console.WriteLine();
 
-                Console.WriteLine("USD HESABI");
+                Console.WriteLine("3- USD HESABI");
                 Console.Write("Iban :");
                 Console.Write(ActiveSession.IbanUsd);
 
@@ -175,6 +181,84 @@ namespace NesneFinal
             }
 
             
+        }
+
+        private static void TransferScreen()
+        {
+            Console.WriteLine(); Console.WriteLine();
+            #region kimetransfer
+            Console.Write("Lütfen kime transfer edeceğinizi seçiniz ;");
+            Console.WriteLine();
+
+            for (int i = 0; i < Database.Clients.Count; i++)
+            {
+                Console.WriteLine(i + ") " + Database.Clients[i].AdSoyad);
+            }
+
+            int selectedPerson;
+            selectedPerson = (Convert.ToInt32(Console.ReadKey().KeyChar) - 48);
+            if (selectedPerson>Database.Clients.Count)
+            {
+                Console.WriteLine("Lütfen listedeki kişilerden birini seçiniz");
+                return;
+            }
+
+            #endregion
+            Console.WriteLine();
+
+            #region karşııbansec
+            Console.WriteLine("Lütfen transfer edeceğiniz kişinin Iban numarasını seçiniz :");
+            Console.WriteLine();
+
+
+            if (Database.Clients[selectedPerson].IbanTR != null)
+            {
+                Console.WriteLine(); Console.WriteLine();
+
+                Console.WriteLine("1- TR HESABI");
+                Console.Write("Iban :");
+                Console.Write(Database.Clients[selectedPerson].IbanTR);
+
+            }
+
+            if (Database.Clients[selectedPerson].IbanEuro != null)
+            {
+                Console.WriteLine(); Console.WriteLine();
+
+                Console.WriteLine("2- EURO HESABI");
+                Console.Write("Iban :");
+                Console.Write(Database.Clients[selectedPerson].IbanEuro);
+
+            }
+
+            if (Database.Clients[selectedPerson].IbanUsd != null)
+            {
+                Console.WriteLine(); Console.WriteLine();
+
+                Console.WriteLine("3- USD HESABI");
+                Console.Write("Iban :");
+                Console.Write(Database.Clients[selectedPerson].IbanUsd);
+            }
+
+
+            int selectedAccount;
+            selectedAccount = (Convert.ToInt32(Console.ReadKey().KeyChar) - 48);
+
+            if (selectedAccount > 4)
+            {
+                Console.WriteLine("Lütfen listedeki hesaplardan birini seçiniz");
+                return;
+            }
+            #endregion
+
+            Console.WriteLine();
+            Console.WriteLine("Lütfen hangi hesabınızdan transfer edilicek onu seçiniz :");
+            GetClientInfo();
+
+            int myselfAcoounts;
+            myselfAcoounts = (Convert.ToInt32(Console.ReadKey().KeyChar) - 48);
+
+
         }
     }
 }
