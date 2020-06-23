@@ -59,5 +59,6 @@ namespace NesneFinal
         public  string IbanUsd { get; set; }
         public  double MiktarIbanUsd { get; set; }
         public int HesapNo { get => hesapNo; set => hesapNo = value; }
+        public string AdSoyad { get => adSoyad; }
     }
 }

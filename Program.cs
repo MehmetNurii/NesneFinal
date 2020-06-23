@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Text;
 
 namespace NesneFinal
 {
@@ -8,14 +8,7 @@ namespace NesneFinal
     {
         static void Main(string[] args)
         {
-            
-            while (true) {
-                
-                //Console.WriteLine(Convert.ToUInt16( Console.ReadKey().KeyChar));
-                UserInterface.Init();
-            }
-
-
+            UserInterface.Init();
         }
     }
 }

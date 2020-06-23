@@ -11,30 +11,39 @@ namespace NesneFinal
 
     class Auth
     {
-        private static List<Auth> dbAuth = new List<Auth>();
+        private static List<Auth> dbAuth = new List<Auth>();//login ekranında ki denemeleri içeriyor.
+        //Dosya'da tutulsun mu diye düşündüm hocam fakat ödev pdf'inde belirmtemişiniz o yüzden
+        //gerek duymadım
 
         private string username;
    
         private int counter=1;
         private DateTime blockedUntil;
 
+        private static Client WhoAmI; //anca başarıyla login olursa içi doluyor . Aktif kullanıcıyı almak için yaratıldı.
 
 
-        public Auth(string username)
+
+        public Auth(string username,int orderNumber) 
         {
             this.username = username;
             dbAuth.Add(this);
+            if (orderNumber!=0)
+            {
+                WhoAmI = Database.Clients[orderNumber-1];
+            }
         }
 
         /*
          * return 0: Hesap kilitlenmiş ve 24 saat geçmemiş
          * return 1: Hesap başarıyla giriş yaptı
          * return 2: Yanlış parola
+         * 
          */
         static public int TryAuth(string username, string password)
         {
-           
-            
+
+            int response = CheckCredentials(ref username, ref password);
             foreach (var item in dbAuth)
             {
                 if (item.username == username)
@@ -44,7 +53,8 @@ namespace NesneFinal
                     {
                         return 0;//24 saat kilitli
                     }
-                    if (CheckCredentials(ref username, ref password)==false)
+                    
+                    if (response == 0)
                     {
                         if (item.counter==2)
                         {
@@ -60,7 +70,7 @@ namespace NesneFinal
                     }
                     else // Kullanıcı daha önce şifre denemesi yapmış ve bu sefer doğru 
                     {
-                        new Auth(username);
+                        new Auth(username,response);
                     }
                     
                     
@@ -68,24 +78,27 @@ namespace NesneFinal
             }
             //Daha önce hiç kullanıcı adı şifre denemesi yapmadıysa aşağıda ki bloklardan birine girecektir.
             
-            if (CheckCredentials(ref username, ref password))
+            if (response != 0)
             {
                 Console.WriteLine(username+" "+password);
-                new Auth(username);
-
+                new Auth(username, response);
+                
                 return 1;
             }
             else
             {
-                new Auth(username).counter++;
-              
+                new Auth(username, response).counter++;
+                
                 return 2;
             }
             
-            return 3;
+            
         }
-
-        static private bool CheckCredentials(ref string username, ref string password)
+        public static Client ActiveAccount()
+        {
+            return WhoAmI;
+        }
+        static private int CheckCredentials(ref string username, ref string password)
         {
 
             return FileIO.ReadCredentials(ref username, getSha256Hash(password));
