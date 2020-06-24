@@ -1,30 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 
 namespace NesneFinal
 {
     public static class UserInterface
     {
+        static int minute = 0;
+
         public static void Init()
         {
+
+
             FileIO.InitFile();
             Test.GetClients();
+            Currency currency = new Currency(6.85,7.71,0.145,0.89,0.129,1.13);
 
             while (UserInterface.LoginScreen() != true) ;
 
             while (true)
             {
+                
                 Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
+                
                 UserInterface.WelcomeScreen();
+                
             }
+            
 
         }
-
+        
         private static bool LoginScreen()
         {
+            
+            
 
             StringBuilder UserID = new StringBuilder();
             Console.Write("User ID :");
@@ -107,7 +121,9 @@ namespace NesneFinal
         
         private static void WelcomeScreen()
         {
-          
+            TimerObject(0);
+
+            
             Client ActiveSession = Auth.ActiveAccount();
 
             Console.WriteLine("Hoşgeldiniz" + " " + ActiveSession.AdSoyad);
@@ -115,11 +131,12 @@ namespace NesneFinal
             Console.WriteLine("Lütfen aşağıdaki seçeneklerden birini seçiniz ");
             Console.WriteLine("1. Bilgilerimi görüntüle");
             Console.WriteLine("2. Havale yap");
+            Console.WriteLine("3. Kurları Göster");
             Console.WriteLine();
 
             char selectedCode;
             selectedCode=Console.ReadKey().KeyChar;
-            
+            TimerObject(1);
             if (selectedCode==49)
             {
                 GetClientInfo();
@@ -128,10 +145,19 @@ namespace NesneFinal
             {
                 TransferScreen();
             }
+            else if (selectedCode==51)
+            {
+                foreach (var item in Database.Currencies)
+                {
+                    Console.WriteLine(item.Key + " "+item.Value);
+                }
+            }
         }
-
+        
         private static void GetClientInfo()
         {
+            TimerObject(1);
+
             Client ActiveSession = Auth.ActiveAccount();
             Console.WriteLine();
             Console.Write("İsim Soyisim : ");
@@ -182,9 +208,42 @@ namespace NesneFinal
 
             
         }
+        
+        public static void TimerObject(int status)
+        {
+           
+            System.Timers.Timer aTimer = new System.Timers.Timer();
+            if (status==0)
+            {
 
+                aTimer.Interval = 60 * 1000;
+                aTimer.Elapsed += Timera;
+                aTimer.Enabled = true;
+                aTimer.Start();
+            }
+            if (status==1)
+            {
+
+                minute = 0;
+            }
+           
+
+            
+        }
+        private static void Timera(Object source, System.Timers.ElapsedEventArgs e) {
+
+            minute++;
+            Console.WriteLine(minute+ "dakikadır inaktifsiniz");
+            Console.WriteLine(5-minute + "dakika sonra oturumunuz sonlandırılacaktır .");
+            if (minute==5)
+            {
+                Environment.Exit(0);
+            }
+        }
         private static void TransferScreen()
         {
+
+            TimerObject(1);
             Console.WriteLine(); Console.WriteLine();
             #region kimetransfer
             Console.Write("Lütfen kime transfer edeceğinizi seçiniz ;");
@@ -194,10 +253,11 @@ namespace NesneFinal
             {
                 Console.WriteLine(i + ") " + Database.Clients[i].AdSoyad);
             }
-
+            
             int selectedPerson;
             selectedPerson = (Convert.ToInt32(Console.ReadKey().KeyChar) - 48);
-            if (selectedPerson>Database.Clients.Count)
+            TimerObject(1);
+            if (selectedPerson>=Database.Clients.Count)
             {
                 Console.WriteLine("Lütfen listedeki kişilerden birini seçiniz");
                 return;
@@ -205,6 +265,8 @@ namespace NesneFinal
 
             #endregion
             Console.WriteLine();
+
+            
 
             #region karşııbansec
             Console.WriteLine("Lütfen transfer edeceğiniz kişinin Iban numarasını seçiniz :");
@@ -220,7 +282,7 @@ namespace NesneFinal
                 Console.Write(Database.Clients[selectedPerson].IbanTR);
 
             }
-
+           
             if (Database.Clients[selectedPerson].IbanEuro != null)
             {
                 Console.WriteLine(); Console.WriteLine();
@@ -230,7 +292,7 @@ namespace NesneFinal
                 Console.Write(Database.Clients[selectedPerson].IbanEuro);
 
             }
-
+           
             if (Database.Clients[selectedPerson].IbanUsd != null)
             {
                 Console.WriteLine(); Console.WriteLine();
@@ -243,6 +305,8 @@ namespace NesneFinal
 
             int selectedAccount;
             selectedAccount = (Convert.ToInt32(Console.ReadKey().KeyChar) - 48);
+            TimerObject(1);
+
 
             if (selectedAccount > 4)
             {
@@ -255,10 +319,22 @@ namespace NesneFinal
             Console.WriteLine("Lütfen hangi hesabınızdan transfer edilicek onu seçiniz :");
             GetClientInfo();
 
+           
+
             int myselfAcoounts;
             myselfAcoounts = (Convert.ToInt32(Console.ReadKey().KeyChar) - 48);
 
+            TimerObject(1);
 
+            Console.WriteLine();
+            Console.WriteLine("Lütfen gönderilecek miktarı giriniz :");
+            double miktar;
+            miktar = Convert.ToDouble( Console.ReadLine());
+            Transfer.MakeTransfer(Database.Clients[selectedPerson], selectedAccount, myselfAcoounts, miktar);
+
+            
         }
     }
+
+
 }

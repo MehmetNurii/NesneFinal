@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -19,6 +21,7 @@ namespace NesneFinal
    
         private int counter=1;
         private DateTime blockedUntil;
+        private DateTime firstAttempt;
 
         private static Client WhoAmI; //anca başarıyla login olursa içi doluyor . Aktif kullanıcıyı almak için yaratıldı.
 
@@ -44,7 +47,7 @@ namespace NesneFinal
         {
 
             int response = CheckCredentials(ref username, ref password);
-            foreach (var item in dbAuth)
+            foreach (var item in dbAuth.ToList())
             {
                 if (item.username == username)
                 {
@@ -56,7 +59,7 @@ namespace NesneFinal
                     
                     if (response == 0)
                     {
-                        if (item.counter==2)
+                        if (item.counter==2 && item.firstAttempt>DateTime.Now)
                         {
                             item.counter++;
                             item.blockedUntil = DateTime.Now.AddDays(1);
@@ -71,6 +74,7 @@ namespace NesneFinal
                     else // Kullanıcı daha önce şifre denemesi yapmış ve bu sefer doğru 
                     {
                         new Auth(username,response);
+                        
                     }
                     
                     
@@ -87,7 +91,9 @@ namespace NesneFinal
             }
             else
             {
-                new Auth(username, response).counter++;
+                Auth temp = new Auth(username, response);
+                temp.counter++;
+                temp.firstAttempt = DateTime.Now.AddMinutes(5);
                 
                 return 2;
             }
@@ -101,7 +107,7 @@ namespace NesneFinal
         static private int CheckCredentials(ref string username, ref string password)
         {
 
-            return FileIO.ReadCredentials(ref username, getSha256Hash(password));
+            return FileIO.ReadCredentials(ref username, GetSha256Hash(password));
 
 
         }
@@ -109,22 +115,20 @@ namespace NesneFinal
 
         //Kaynak https://www.c-sharpcorner.com/article/compute-sha256-hash-in-c-sharp/
 
-        static string getSha256Hash(string rawData)
+        static string GetSha256Hash(string rawData)
         {
-            using (SHA256 sha256Hash = SHA256.Create())
+            using SHA256 sha256Hash = SHA256.Create();
+            // ComputeHash - returns byte array  
+            byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+            // Convert byte array to a string   
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < bytes.Length; i++)
             {
-                // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                // Convert byte array to a string   
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-
-                return builder.ToString();
+                builder.Append(bytes[i].ToString("x2"));
             }
+
+            return builder.ToString();
         }
     }
 }

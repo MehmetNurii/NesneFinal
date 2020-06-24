@@ -13,6 +13,8 @@ namespace NesneFinal
         private static readonly string authFile = @"c://final/auth.txt";
         public static void InitFile()
         {
+            
+
             if (Directory.Exists(mainDirectory))
             {
                 if (File.Exists(clientFile))
@@ -84,24 +86,22 @@ namespace NesneFinal
 
       public static void WriteClient(Client client)
       {
+            
             try
             {
-                using (StreamWriter file = File.AppendText(clientFile))
+                using (StreamWriter file = File.AppendText(clientFile)){
+                    if (client.IbanTR != null)
                 {
-                   
-                    if (client.IbanTR!=null)
-                    {
-                        file.WriteLine(client.HesapNo+","+client.IbanTR+","+client.MiktarIbanTR);
-                    }
-                    if (client.IbanUsd != null)
-                    {
-                        file.WriteLine(client.HesapNo + "," + client.IbanUsd + "," + client.MiktarIbanUsd);
-                    }
-                    if (client.IbanEuro != null)
-                    {
-                        file.WriteLine(client.HesapNo + "," + client.IbanEuro + "," + client.MiktarIbanEuro);
-                    }
-
+                    file.WriteLine(client.HesapNo + "," + client.IbanTR + "," + client.MiktarIbanTR);
+                }
+                if (client.IbanUsd != null)
+                {
+                    file.WriteLine(client.HesapNo + "," + client.IbanUsd + "," + client.MiktarIbanUsd);
+                }
+                if (client.IbanEuro != null)
+                {
+                    file.WriteLine(client.HesapNo + "," + client.IbanEuro + "," + client.MiktarIbanEuro);
+                }
                 }
             }
             catch (FileNotFoundException e)
@@ -118,6 +118,65 @@ namespace NesneFinal
                 Console.WriteLine($"The file could not be opened: '{e}'");
             }
             
+        }
+
+        public static bool CheckAccountBalance(string Iban,double amount)
+        {
+            try
+            {
+
+                
+                using (StreamReader sr = File.OpenText(clientFile))
+                {
+                    string[] AccountInfo;
+                    
+                    while (!sr.EndOfStream)
+                    {
+                        AccountInfo = sr.ReadLine().Split(',');
+
+                        if (Iban==AccountInfo[1])
+                        {
+                            if (amount>Convert.ToDouble( AccountInfo[2]))
+                            {
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+
+
+
+                    }
+
+                }
+                return false ;
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine($"The file was not found: '{e}'");
+
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                Console.WriteLine($"The directory was not found: '{e}'");
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine($"The file could not be opened: '{e}'");
+            }
+            return false;
+        }
+
+        public static void ResetClientData()
+        {
+            File.Delete(clientFile);
+            foreach (var item in Database.Clients)
+            {
+                WriteClient(item);
+            }
+
         }
       
     }

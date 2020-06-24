@@ -6,31 +6,38 @@ namespace NesneFinal
 {
     class Currency 
     {
-        private static Dictionary<string, double> Currencies = new Dictionary<string, double>();
+        
        
 
         public Currency(double tryusd,double tryeuro,double usdtry,double usdeuro,double eurotry,double eurousd)
         {
             //Hocam inşa edici kullanmamın sebebi program çalıştıktan sonra kurları güncelleyebilmek.
 
-            Add("USD/TRY",3.0);
-            Add("USD/EURO", 3.0);
-            Add("TRY/USD", 3.0);
-            Add("TRY/EURO", 3.0);
-            Add("EURO/USD", 3.0);
-            Add("TRY/TRY", 3.0);
+            Add("USD/TRY", usdtry);
+            Add("TRY/USD", tryusd);
+            Add("USD/EURO", usdeuro);
+            Add("EURO/TRY", eurotry);
+            Add("TRY/EURO", tryeuro);
+            Add("EURO/USD", eurousd);
+            
+            
 
         }
 
         private void Add(string currencyName,double currency) {
-            if (Currencies.ContainsKey(currencyName))
+            if (Database.Currencies.ContainsKey(currencyName))
             {
-                Currencies[currencyName] = currency;
+                Database.Currencies[currencyName] = currency;
             }
             else 
             {
-                Currencies.Add(currencyName, currency);
+                Database.Currencies.Add(currencyName, currency);
             }
+        }
+
+        public static double GetCurrency(string cur1,string cur2)
+        {
+            return Database.Currencies[cur1 + "/" + cur2];
         }
 
 
